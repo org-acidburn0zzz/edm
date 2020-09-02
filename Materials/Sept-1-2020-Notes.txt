@@ -1,0 +1,73 @@
+EDM kick-off meeting - September 1, 2020
+
+Welcome by Tommy (program lead)
+- This is not a wg or rg. Goal is to have a focused discussion and get input by interested people in the community so we can write document, have workshops, or provide recommendations.
+- Tommy is moderator; use +q to join the queue!
+- How flexibility of protocol is impacted by mechanisms and our process, e.g. interop testing, greasing. But not done consistently and a lot of effort to organise. There is a trend so maybe we can put some general tools in place to help.
+- Issues on GitHub on evolvability and deployability (30 minutes each)
+
+Issue #3 What extension mechanisms are successful?
+- Tommy: draft started by Martin Thomson: Good set to start with. What is missing? What has changed?
+- Martin: list is complete as I was aware of at that time. But since thought more about evolvement of other parties. Main thing that is needed is review and feedback.
+- Tommy: document can take it up?
+- Martin: Yes, people can pitch in and turn it into something usable
+- Tommy: how do we make active use happen in the way we design our extension mechanism? E.g how to design IANA Considerations. Could that be added?
+- Martin: mechanism that people care about are the ones that work. So one of the points is to have very few extensions points. Often people want every possible option and multiple IANA registries but that haven’t work well in the past
+- Tommy: notice the same. Flag e.g. might be hard to extend as you don’t plan to use. You should active use or make it an invariant. 
+- Brian: how do you create invariant without actively using it. Active use if 4.1. if you want to have an extension mechanise that works, you need one that works. Rest is about if you can’t get active use then you should simulate it. Invariant is a document a threat to simulate it
+- Martin: crypto is narrowing who you expose to.
+- Tommy: you can still ossified on the other end
+- Brian: or on the encryption.
+- Tommy: Broader context: are there other examples and it is true that active use are the used that work?
+- Brian: Like to heart examples of active use failing
+- Tommy: what’s the additional we might need to add
+- Watson: NTPv4 extension field was used by implementation but RFC came later, so squatting happened and also DoS application: So aggressively policed NTP and no we have all kind of network problems. So real challenge to negotiate v5 now.
+- Tommy: it wasn’t used well until later
+- Watson: widely deployed implementation but not widely deployed protocol extension. It works somewhat but depends on your ISP. There is a certain range that is bad.
+- Chris: TLS had mixed success for new extensions. ESNI recent debacle to be blocked by china. What’s the threat model. Is it just a buggy middlebox or actively preventing a certain extension.
+- Tommy: maybe something to add. Even if you have active use but if people don’t like it, you probably need crypto.
+- Chris: Moree guidance about which extension mechanism to use.
+- Martin: Bootstrapping problem for crypto. So you have to be exposed at some point.
+- Chris: TLS vs. QUIC?
+- Martin: QUIC is probably much like TLS in that sense.
+- Chris: QUIC obfuscated
+- Martin: not sure how successful in the long run
+- Tommy: helps against dump middle boxes but not against active attackers
+- TLS is interesting because we need to treat security special. You can have crypto context before you have crypto context. There is also different models of non-functioning of extension mechanism. SNI changes the channel. Other protocols use this to upgrade as a nice to have. In some cases it chances the channel in an unexpectable ways. Do we need to treat them different? Different semantics? Different terminology. Not not saying “security is hard” but consequences are different. For security a failure of connectivity might be preferable. It’s different than just interference. Same wire effect but different semantics and so these are two 
+- Tommy: different layers. On higher layer your website just looks like garbage
+- Brain: be more carful about things that impact end user directly.
+- Colin: Are there other cases where we want to fail rather can continue without extension. That seems to be the distinction 
+- Tommy: Can always design fallbacks. Usually applicator does not rely on newer semantics.
+- Brain: problem with SNI is that is does work. Are other other case where it is better to fail. Only if you want to test the extension. It might just be that security is special.
+- Tommy: temporal aspect. Every downgrade has explicit engineering effort. Only do it to something that I know works well on the Internet. Don’t go back to SSL. So it’s only so far we fall back. Maybe something to document
+- Martin: Watson made comment on chat: if you can’t trust the other to implement feature properly, sometimes it’s not worths to continue, so you know that something has failed and you escalate. Robustness princple doesn’t always give you reliable results. Carsten says “fail fast”, I’d say “fail noisy”.
+- Tommy: fail fast and let everybody know.
+- Tommy: look at notes and ask people to review
+
+Issue #1: Approaches to tracking implementation interop and deployment
+- Tommy: discussed on wg chairs list. We have examples on quic and tls; use of GitHub or wiki. What have people done and what works well?
+- Charles: increasing deployability also needs code to help people to implement correctly or understand, e.g. like test clients. We have this in the hackathon but those are not findable easily. People in the hacakthon know but if you only have the RFC how do you know? Is that a separate issue?
+- Tommy: could open a separate issue. But it on topic. Tracking implementation to the point that is helped deployability. Where are people putting this?
+- Charles: Usually in the hackathon wiki for that IETF meeting. Like to GitHub repos or other wikis that have links to repos. Also in the presentation of hackathon with are also in another github repo. But are those link still useful after the hackathon. Info at multiple different place. Sometimes in wg wiki but that’s not universal either. Let’s discuss and agree to a small set of ways to do that
+- Colin: For RTP spec we had a separate draft to write down interop points and implementation. Was never intended to be published but slides are in proceedings and draft is still there. Examples of Interop record which life in the IETF process 
+- Martin: protocols work the best of you have a developer community around them that communicate to each other. In those communities there have not been any problems to figure out where to find things. 
+- Tommy: healthy communities. Wiki in GitHub for QUIC as all links and that’s better for implementor community. Should we have a template or an easy way too bootstrap?
+- Roman: We don’t need all interop report in the same format but the datatracker should have a standardised pointer. Consistent way to find things
+- Mirja. Other people need to be able to join
+- Tommy: don’t have too many silos of communities. Communities involved in the IETF that’s great. But how to enter and how to make clear to invite implementor who are otherwise not involved in the protocol spec work
+- Colin: pointers to external resources are great but those external resources might not be stable. It hard to add resources beside wiki. E.g. markdown to upload. Make it easier to put content on ietf side.
+- Tommy: datatracker?
+- Colin: Somewhere on ietf.org 
+- Martin on chat: TLS wiki rotted pretty fast
+- Tommy: datatracker: proposed slides works better than just relying on chairs. Implementor should propose content
+- Brian: Publicly available endpoints makes sense in QUIC because of virtual interops and time zone problem. Probably there are other testing endpoints. Collect those and make them publicly available. Might be behind version but if you use it yourself it’s not rotting
+- Tommy: also calendars for interops
+- Zhenbin: In RGT area we have a draft to record interop/implementation status. But when wg is closed this draft will not be updated. Can we simulate IPR mechanism? Tool for user to disclose implementation or interop test results. Update at any time.
+- Tommy: in RGT there is already practice to have a section in draft about implementation status. Move this to a different place or amend RFC to have a way to update that even after the RFC is published.
+- Watson: Is the question about tracking interop testing or deployments? Concerns about long-term is not a problem if it’s only for draft development. I only know NTP and new versions will be in release note. But a lot implementations are only there to test if spec works.
+- Tommy: different groups find different value in documenting development or deployment implementations
+- Mirja: Important is to make information easy to find. If people are aware a common format might arise.
+- Charles: for next hackathon let’s get this information for all project in wiki or datatracker and make it easy to find.
+- Tommy: have already hackathon infrastructure to try things out. Virtual interop testing is just individual hackathon that we can make look the same.
+- Tommy: look at existing tools and what’s done at the hackathon and recommendation we can give.
+- Tommy: Action items - (1) work on updating and reviewing use-it-or-lose-it document, (2) work with tools team and hackathon to start tracking Interop testing.
